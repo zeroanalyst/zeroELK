@@ -28,7 +28,7 @@ zeroELK is a script that will install ELK stack 7.8 on the RedHat based system.
 #curl -v SERVERIP:9200
 {
   "name" : "HOSTNAME",
-  "cluster_name" : "ZeroAnalyst",
+  "cluster_name" : "zeroELK",
   "cluster_uuid" : "tgd79-MmTLWh2AedCR4nfw",
   "version" : {
     "number" : "7.8.0",
