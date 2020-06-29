@@ -19,7 +19,7 @@ zeroELK is a script that will install ELK stack 7.8 on the RedHat based system.
 ```sh
 #sudo chmod +x zeroELK
 ```
-3. run easyELK
+3. run zeroELK
 ```sh
 #sudo ./zeroELK
 ```
