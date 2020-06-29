@@ -76,7 +76,7 @@ configure_elasticsearch_yaml()
     # Backup the current Elasticsearch configuration file
     mv $ES_CONF $ES_CONF.bak
     # Set cluster and machine names - just use hostname for our node.name
-    echo "cluster.name: ZeroAnalyst" >> $ES_CONF
+    echo "cluster.name: zeroELK" >> $ES_CONF
     echo "http.port: 9200" >> $ES_CONF
     echo "network.host: 0.0.0.0" >> $ES_CONF
     echo "discovery.zen.ping.unicast.hosts: ["$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}'):9300,0.0.0.0:9300"]" >> $ES_CONF
