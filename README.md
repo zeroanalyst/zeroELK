@@ -63,7 +63,7 @@ elasticsearch URL: "http://SERVERIP:9200"
 Kibana URL: "http://SERVERIP:5601"
 ```
 
-Fore more detailed information on ELK, visit the Elastic configuration guides below:
+Fore more detailed information on ELK, Please visit the elastic configuration guides:
 - Elasticsearch -  <https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html>
 - Kibana - <https://www.elastic.co/guide/en/kibana/current/index.html>
 - Logstash - <https://www.elastic.co/guide/en/logstash/current/getting-started-with-logstash.html>
