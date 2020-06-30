@@ -68,3 +68,6 @@ Fore more detailed information on ELK, Please visit the elastic configuration gu
 - Kibana - <https://www.elastic.co/guide/en/kibana/current/index.html>
 - Logstash - <https://www.elastic.co/guide/en/logstash/current/getting-started-with-logstash.html>
 
+# How To Contact Us
+We have created the slack channel to provide real time updates on the progress. you can write us on abhi@zeroanalyst.com and share your one pager profile so that you can also become a part of our journey.
+
