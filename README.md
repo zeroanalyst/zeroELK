@@ -59,7 +59,7 @@ zeroELK is a script that will install ELK stack 7.8 on the RedHat based system.
 ```
 6. your turn
 ```sh
-elasticsearch URL: "http://SERVERIP:9200"
+Elasticsearch URL: "http://SERVERIP:9200"
 Kibana URL: "http://SERVERIP:5601"
 ```
 
