@@ -25,6 +25,9 @@ dependency_check_rpm() {
 rpm_elk() {
     #Installing wget.
     sudo yum install wget -y
+	#Installing locate functionality
+	sudo yum install mlocate
+	sudo updatedb
 	#Download and install the public signing key
 	sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
     # Downloading rpm package of logstash
@@ -51,7 +54,7 @@ rpm_elk() {
 	sudo systemctl start kibana.service	
 }
 
-configure_kibana_yaml()
+configure_kibana_yml()
 {
     local KIBANA_CONF=/etc/kibana/kibana.yml
     # backup the current config
@@ -61,17 +64,28 @@ configure_kibana_yaml()
     echo "server.host: \"$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}')"\" >> $KIBANA_CONF
     echo "elasticsearch.hosts: [\"http://$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}'):9200\"]" >> $KIBANA_CONF
     #specify kibana log location
-    echo "logging.dest: /var/log/kibana.log" >> $KIBANA_CONF
-    touch /var/log/kibana.log
-    chown kibana: /var/log/kibana.log
+    echo "logging.dest: /var/log/zeroELK.log" >> $KIBANA_CONF
+    touch /var/log/zeroELK.log
+    chown kibana: /var/log/zeroELK.log
     # set logging to quiet by default. Note that kibana does not have
     # a log file rotation policy, so the log file should be monitored
     echo "logging.quiet: true" >> $KIBANA_CONF
-    sudo systemctl restart kibana.service
+    echo "xpack.security.enabled: true" >> $KIBANA_CONF
+    echo "xpack.security.audit.enabled: true" >> $KIBANA_CONF
+    echo "configuring username as kibana"
+    echo "elasticsearch.username: \"kibana"\" >> $KIBANA_CONF
+	echo "---------------------------------------------------------------"
+    echo "---------------------------------------------------------------"
+    echo -n "please enter kibana password configured earlier :"  
+    read -s kbpass
+    echo "elasticsearch.password: \"$kbpass\"" >> $KIBANA_CONF
+    sudo systemctl start kibana.service
 }
 
-configure_elasticsearch_yaml()
-{
+configure_elasticsearch_yml()
+{   
+    sudo systemctl stop elasticsearch.service
+    sudo systemctl stop kibana.service
     local ES_CONF=/etc/elasticsearch/elasticsearch.yml
     # Backup the current Elasticsearch configuration file
     mv $ES_CONF $ES_CONF.bak
@@ -83,12 +97,17 @@ configure_elasticsearch_yaml()
     # put log files on the OS disk in a writable location
     echo "path.logs: /var/log/elasticsearch" >> $ES_CONF
     echo "path.data: /var/lib/elasticsearch" >> $ES_CONF
+    echo "xpack.security.enabled: true" >> $ES_CONF
+    echo "xpack.security.transport.ssl.enabled: true" >> $ES_CONF
+    echo "Create a Secure Password That You Can Remember Later"
+    sudo systemctl start elasticsearch.service
+    sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
     sudo systemctl restart elasticsearch.service
 }
 
 check_services()
 {  
-   echo "CHECK CORE SERVICES of ELK STACK!!"
+   echo "CHECK STATUS of ELK STACK!!"
    sudo systemctl status logstash.service
    sudo systemctl status elasticsearch.service
    sudo systemctl status kibana.service
@@ -96,19 +115,24 @@ check_services()
    echo "---------------------------------------------------------------"
    echo "---------------------------------------------------------------"
    echo "Enable access to elasticsearch"
-   firewall-cmd --add-port=9200/tcp --permanent
+   sudo firewall-cmd --add-port=9200/tcp --permanent
    echo "Enable access to kibana"
-   firewall-cmd --add-port=5601/tcp --permanent
-   echo "Enable access to recieve logs on the 6500 TCP\UDP Port"
-   firewall-cmd --add-port=6500/tcp --permanent
-   firewall-cmd --add-port=6500/udp --permanent
+   sudo  firewall-cmd --add-port=5601/tcp --permanent
+   echo "Enable access to recieve logs on the 5514 TCP\UDP Port"
+   sudo firewall-cmd --add-port=5514/tcp --permanent
+   sudo firewall-cmd --add-port=5514/udp --permanent
+   #UDP Rule
+   sudo firewall-cmd --add-forward-port=port=514:proto=udp:toport=5514:toaddr=127.0.0.1 --permanent
+   #TCP Rule
+   sudo firewall-cmd --add-forward-port=port=514:proto=tcp:toport=5514:toaddr=127.0.0.1 --permanent
+   sudo firewall-cmd --complete-reload
+   sudo systemctl restart firewalld 
    echo "---------------------------------------------------------------"
    echo "---------------------------------------------------------------"
-   echo " $(date)"
-   echo " Finished ZeroAnalyst Installer Installer"
-   echo " Your Turn: Finish Configuration "
+   echo " Your Turn: Finish Configuration"
    echo " elasticsearch URL: [\"http://$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}'):9200\"]"
    echo " Kibana URL: [\"http://$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}'):5601\"]"
+   echo " Please use elastic user and configured password to login to kibana"
    echo "---------------------------------------------------------------"
    echo "---------------------------------------------------------------"
    echo "--------------------END OF INSTALLER---------------------------"
@@ -122,10 +146,9 @@ if [ "$(grep -Ei 'fedora|redhat|centos' /etc/*release)" ]
         echo "It's a RedHat based system."
         dependency_check_rpm
         rpm_elk
-		configure_elasticsearch_yaml
-		configure_kibana_yaml
-		check_services
+        configure_elasticsearch_yml
+	configure_kibana_yml
+	check_services
 else
     echo "This script doesn't support ELK installation on this OS."
-
 fi
