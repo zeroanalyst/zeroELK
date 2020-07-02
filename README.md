@@ -30,7 +30,7 @@ zeroELK is a script that will install ELK stack 7.8 on the RedHat based system.
 
 5. check status of installation
 ```sh
-#curl -v SERVERIP:9200
+#curl -v -u [username]:[password] SERVERIP:9200
 {
   "name" : "HOSTNAME",
   "cluster_name" : "zeroELK",
@@ -49,7 +49,7 @@ zeroELK is a script that will install ELK stack 7.8 on the RedHat based system.
   "tagline" : "You Know, for Search"
 }
 
-# curl -v SERVERIP:5601
+# curl -v -u [username]:[password] SERVERIP:5601
 * About to connect() to SERVERIP port 5601 (#0)
 *   Trying SERVERIP...
 * Connected to SERVERIP (SERVERIP) port 5601 (#0)
