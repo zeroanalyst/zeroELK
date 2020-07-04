@@ -141,7 +141,7 @@ check_services()
 }
 
 # Installing ELK Stack
-if [ "$(grep -Ei 'fedora|redhat|centos' /etc/*release)" ]
+if [ "$(grep -Ei 'redhat|centos' /etc/*release)" ]
     then
         echo "It's a RedHat based system."
         dependency_check_rpm
