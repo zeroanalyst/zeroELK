@@ -56,9 +56,9 @@ rpm_elk() {
 
 configure_kibana_yml()
 {
-    sudo local KIBANA_CONF=/etc/kibana/kibana.yml
+    local KIBANA_CONF=/etc/kibana/kibana.yml
     # backup the current config
-    sudo mv $KIBANA_CONF $KIBANA_CONF.bak
+    mv $KIBANA_CONF $KIBANA_CONF.bak
     # set the elasticsearch URL
     echo "server.port: 5601" >> $KIBANA_CONF
     echo "server.host: \"$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}')"\" >> $KIBANA_CONF
@@ -86,9 +86,9 @@ configure_elasticsearch_yml()
 {   
     sudo systemctl stop elasticsearch.service
     sudo systemctl stop kibana.service
-    sudo local ES_CONF=/etc/elasticsearch/elasticsearch.yml
+    local ES_CONF=/etc/elasticsearch/elasticsearch.yml
     # Backup the current Elasticsearch configuration file
-    sudo mv $ES_CONF $ES_CONF.bak
+    mv $ES_CONF $ES_CONF.bak
     # Set cluster and machine names - just use hostname for our node.name
     echo "cluster.name: zeroELK" >> $ES_CONF
     echo "http.port: 9200" >> $ES_CONF
