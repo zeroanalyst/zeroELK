@@ -23,12 +23,7 @@ zeroELK is a next generation threat hunting platform build on the elastic ecosys
 ```sh
 #sudo ./zeroELK.sh
 ```
-4. if you will experience error called as "bad interpreter: No such file or directory" then please run below command. we will be fixing it in next update.
-```sh
-#sed -i -e 's/\r$//' zeroELK.sh
-```
-
-5. check status of installation
+4. check status of installation
 ```sh
 #curl -v -u [username]:[password] SERVERIP:9200
 {
@@ -58,11 +53,11 @@ zeroELK is a next generation threat hunting platform build on the elastic ecosys
 > Host: SERVERIP:5601
 > Accept: */*
 ```
-6. stop firewalld service to access kibana over the LAN Network.
+5. stop firewalld service to access kibana over the LAN Network.
 ```sh
 #service firewalld stop
 ```
-7. your turn
+6. your turn - you can login using username & password that you created.
 ```sh
 Elasticsearch URL: "http://SERVERIP:9200"
 Kibana URL: "http://SERVERIP:5601"
