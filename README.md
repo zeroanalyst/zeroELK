@@ -3,7 +3,7 @@ zeroELK is a next generation threat hunting platform build on the elastic ecosys
 
 
 # Prerequisites
-- RPM-based Linux distributions such as RedHat, Centos, Fedora etc. are supported.
+- RPM-based Linux distributions such as RedHat, Centos, etc. are supported.
 - TCP/IP protocol support - recommended to have a static IP set for your system.
 - Must be able to elevate to root privileges
 - Intel x86 or compatible processor 
