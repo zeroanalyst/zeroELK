@@ -77,7 +77,7 @@ configure_kibana_yml()
     echo "---------------------------------------------------------------"
     echo "---------------------------------------------------------------"
     echo -n "please enter kibana password configured earlier :"  
-    sudo read -s kbpass
+    read -s kbpass
     echo "elasticsearch.password: \"$kbpass\"" >> $KIBANA_CONF
     sudo systemctl start kibana.service
 }
@@ -141,7 +141,7 @@ check_services()
 }
 
 # Installing ELK Stack
-if [ "$(grep -Ei 'centos' /etc/*release)" ]
+if [ "$(grep -Ei 'centos|fedora' /etc/*release)" ]
     then
         echo "It's a supported operating system."
         dependency_check_rpm
