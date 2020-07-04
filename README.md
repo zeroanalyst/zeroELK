@@ -1,5 +1,5 @@
 # zeroELK
-zeroELK is a script that will install ELK stack 7.8 on the RedHat based system. 
+zeroELK is a next generation threat hunting platform build on the elastic ecosystem to provide very advance autonomous breach detection capabilities to community.
 
 
 # Prerequisites
