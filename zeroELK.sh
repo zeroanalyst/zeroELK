@@ -56,17 +56,17 @@ rpm_elk() {
 
 configure_kibana_yml()
 {
-    local KIBANA_CONF=/etc/kibana/kibana.yml
+    sudo local KIBANA_CONF=/etc/kibana/kibana.yml
     # backup the current config
-    mv $KIBANA_CONF $KIBANA_CONF.bak
+    sudo mv $KIBANA_CONF $KIBANA_CONF.bak
     # set the elasticsearch URL
     echo "server.port: 5601" >> $KIBANA_CONF
     echo "server.host: \"$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}')"\" >> $KIBANA_CONF
     echo "elasticsearch.hosts: [\"http://$(ip addr |grep -v "127.0.0.1" |grep "inet "|awk -F " " '{print $2}'|awk -F "/" '{print $1}'):9200\"]" >> $KIBANA_CONF
     #specify kibana log location
     echo "logging.dest: /var/log/zeroELK.log" >> $KIBANA_CONF
-    touch /var/log/zeroELK.log
-    chown kibana: /var/log/zeroELK.log
+    sudo touch /var/log/zeroELK.log
+    sudo chown kibana: /var/log/zeroELK.log
     # set logging to quiet by default. Note that kibana does not have
     # a log file rotation policy, so the log file should be monitored
     echo "logging.quiet: true" >> $KIBANA_CONF
@@ -74,10 +74,10 @@ configure_kibana_yml()
     echo "xpack.security.audit.enabled: true" >> $KIBANA_CONF
     echo "configuring username as kibana"
     echo "elasticsearch.username: \"kibana"\" >> $KIBANA_CONF
-	echo "---------------------------------------------------------------"
+    echo "---------------------------------------------------------------"
     echo "---------------------------------------------------------------"
     echo -n "please enter kibana password configured earlier :"  
-    read -s kbpass
+    sudo read -s kbpass
     echo "elasticsearch.password: \"$kbpass\"" >> $KIBANA_CONF
     sudo systemctl start kibana.service
 }
@@ -86,9 +86,9 @@ configure_elasticsearch_yml()
 {   
     sudo systemctl stop elasticsearch.service
     sudo systemctl stop kibana.service
-    local ES_CONF=/etc/elasticsearch/elasticsearch.yml
+    sudo local ES_CONF=/etc/elasticsearch/elasticsearch.yml
     # Backup the current Elasticsearch configuration file
-    mv $ES_CONF $ES_CONF.bak
+    sudo mv $ES_CONF $ES_CONF.bak
     # Set cluster and machine names - just use hostname for our node.name
     echo "cluster.name: zeroELK" >> $ES_CONF
     echo "http.port: 9200" >> $ES_CONF
