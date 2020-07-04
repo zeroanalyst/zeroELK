@@ -1,5 +1,5 @@
 # zeroELK
-zeroELK is a next generation threat hunting platform build on the elastic ecosystem to provide very advance autonomous breach detection capabilities to community.
+zeroELK is a next generation threat hunting platform build on the elastic ecosystem to provide advance autonomous breach detection capabilities to organisations.
 
 
 # Prerequisites
